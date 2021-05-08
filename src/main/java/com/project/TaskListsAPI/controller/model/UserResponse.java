@@ -1,4 +1,4 @@
-package com.project.TaskListsAPI.controller.dto;
+package com.project.TaskListsAPI.controller.model;
 
 
 import com.project.TaskListsAPI.repository.entity.Task;

@@ -1,13 +1,14 @@
-package com.project.TaskListsAPI.controller.dto;
+package com.project.TaskListsAPI.controller.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UserRequest {
+@Builder
+public class UserRequestLogin {
 
     private String username;
     private String password;
-    private String role;
 }

@@ -1,23 +1,20 @@
-package com.project.TaskListsAPI.service.mapper;
+package com.project.TaskListsAPI.mapper;
 
-import com.project.TaskListsAPI.controller.dto.UserRequest;
-import com.project.TaskListsAPI.controller.dto.UserResponse;
+import com.project.TaskListsAPI.controller.model.UserRequest;
+import com.project.TaskListsAPI.controller.model.UserRequestLogin;
+import com.project.TaskListsAPI.controller.model.UserResponse;
 import com.project.TaskListsAPI.repository.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
 
 
-    public User mapUserRequestToUser(UserRequest userRequest,PasswordEncoder passwordEncoder)
+    public User mapUserRequestToUser(UserRequest userRequest)
     {
         User user = User.builder()
                 .username(userRequest.getUsername())
-                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .password((userRequest.getPassword()))
                 .role(userRequest.getRole())
                 .build();
         return user;
@@ -31,6 +28,14 @@ public class UserMapper {
                 .tasks(user.getTasks())
                 .build();
         return userResponse;
+    }
+    public User mapUserRequestLoginToUser(UserRequestLogin userRequestLogin)
+    {
+        User user = User.builder()
+                .username(userRequestLogin.getUsername())
+                .password((userRequestLogin.getPassword()))
+                .build();
+        return user;
     }
 
 
