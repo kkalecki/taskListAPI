@@ -34,9 +34,18 @@ public class TaskController {
     @PostMapping("/task")
     public ResponseEntity<Void> save(@RequestBody TaskRequest taskRequest)
     {
+        System.out.println("taskRequest w controller: "+taskRequest);
         Task task = mapper.mapTaskRequestToTask(taskRequest);
+        System.out.println("task w controller:"+task);
         taskService.save(task);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/task")
+    public ResponseEntity<List<TaskResponse>> deleteTaskById(@RequestParam Long task_id)
+    {
+        taskService.deleteById(task_id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

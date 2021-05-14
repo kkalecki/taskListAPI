@@ -3,6 +3,7 @@ package com.project.TaskListsAPI.controller;
 import com.project.TaskListsAPI.controller.model.ParentChildRequest;
 import com.project.TaskListsAPI.mapper.ParentChildMapper;
 import com.project.TaskListsAPI.repository.entity.ParentChild;
+import com.project.TaskListsAPI.repository.entity.User;
 import com.project.TaskListsAPI.service.ParentChildService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,20 @@ public class ParentChildController {
     public ResponseEntity<Void> addChild(@RequestBody ParentChildRequest parentChildRequest)
     {
         ParentChild parentChild = mapper.mapParentChildRequestToParentChild(parentChildRequest);
-        parentChildService.save(parentChild);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        boolean exist = parentChildService.save(parentChild);
+
+        if(exist)
+        {
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        else
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+
+
+
+
     }
 }

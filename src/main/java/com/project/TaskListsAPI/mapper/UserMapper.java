@@ -21,9 +21,14 @@ public class UserMapper {
     }
     public UserResponse mapUsertoUserResponse(User user)
     {
+//        UserResponse userResponse = UserResponse.builder()
+//                .username(user.getUsername())
+//                .parents(user.getParents())
+//                .children(user.getChildren())
+//                .tasks(user.getTasks())
+//                .build();
         UserResponse userResponse = UserResponse.builder()
                 .username(user.getUsername())
-                .parents(user.getParents())
                 .children(user.getChildren())
                 .tasks(user.getTasks())
                 .build();

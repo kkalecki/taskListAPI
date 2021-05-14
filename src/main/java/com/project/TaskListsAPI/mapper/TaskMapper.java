@@ -26,6 +26,7 @@ public class TaskMapper {
     public List<TaskResponse> mapTasksToTaskResponses(List<Task> tasks)
     {
         List<TaskResponse> taskResponses = tasks.stream().map(task -> TaskResponse.builder()
+                .id(task.getId())
                 .title(task.getTitle())
                 .content(task.getContent())
                 .build()).collect(Collectors.toList());

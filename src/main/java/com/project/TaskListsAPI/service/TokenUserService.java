@@ -17,6 +17,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,39 +27,71 @@ public class TokenUserService {
     private final Properties properties;
 
 
-    public void save(User user)
-    {
-        String password = user.getPassword();
-        String hashedPassword = Hasher.hash(password);
-        user.setPassword(hashedPassword);
+    public boolean save(User user) {
 
-        userRepository.save(user);
-    }
-
-    public Token login(User loggedUser)
-    {
-
-        User user = userRepository.findByUsername(loggedUser.getUsername()).orElseThrow(() -> new EntityNotFoundException("Nie ma"));
-        String password = Hasher.hash(loggedUser.getPassword());
-
-        if(password.equals(user.getPassword()))
+        String username = user.getUsername();
+        Optional<User> checkIfUserExists = userRepository.findByUsername(username);
+        if(checkIfUserExists.isEmpty())
         {
+            String password = user.getPassword();
+            String hashedPassword = Hasher.hash(password);
+            user.setPassword(hashedPassword);
 
-            String token = Jwts.builder().claim("role", user.getRole())
-                    .setSubject(user.getUsername())
-                    .signWith(SignatureAlgorithm.HS256, properties.getConfig("secret")).compact();
-
-            return new Token(token);
+            userRepository.save(user);
+            return true;
         }
         else
         {
-            throw new RuntimeException("Password doesnt match");
+            return false;
+        }
+
+
+
+    }
+
+    public Token login(User loggedUser) {
+
+        Optional<User> user = userRepository.findByUsername(loggedUser.getUsername());
+        if(user.isEmpty())
+        {
+            return new Token("",false,false);
+        }
+        else {
+
+            String password = Hasher.hash(loggedUser.getPassword());
+
+            if (password.equals(user.get().getPassword())) {
+
+                String token = Jwts.builder().claim("role", user.get().getRole())
+                        .setSubject(user.get().getUsername())
+                        .signWith(SignatureAlgorithm.HS256, properties.getConfig("secret")).compact();
+
+                if(user.get().getRole().equals("PARENT"))
+                {
+                    return new Token(token,true,true);
+                }
+                else
+                {
+                    return new Token(token,true,false);
+                }
+
+
+            } else {
+                return new Token("",false,false);
+            }
         }
 
     }
-    public User findByUsername(String username)
-    {
-        return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("nie ma takiego usera"));
+
+    public User findByUsername(String username) {
+
+        return userRepository.findByUsername(username).orElse(new User());
+    }
+
+    public List<String> findChildrenNames(String username) {
+        User user = findByUsername(username);
+        return user.getChildren().stream().map(User::getUsername).collect(Collectors.toList());
+
     }
 
 }

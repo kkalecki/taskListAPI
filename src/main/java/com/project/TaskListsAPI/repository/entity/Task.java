@@ -25,4 +25,6 @@ public class Task {
     private String content;
     @Column(name = "user_id")
     private Long user_id;
+
+
 }

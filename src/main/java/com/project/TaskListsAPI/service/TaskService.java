@@ -15,11 +15,17 @@ public class TaskService {
 
     public void save(Task task)
     {
+        System.out.println(task);
         taskRepository.save(task);
     }
 
     public List<Task> findAllByUser_id(Long user_id)
     {
         return taskRepository.findAllByUserId(user_id);
+    }
+
+    public void deleteById(Long task_id)
+    {
+        taskRepository.deleteById(task_id);
     }
 }

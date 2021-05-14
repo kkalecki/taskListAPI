@@ -11,6 +11,7 @@ import javax.persistence.Column;
 @Builder
 public class TaskResponse {
 
+    private Long id;
     private String title;
     private String content;
 }

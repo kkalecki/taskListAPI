@@ -16,7 +16,6 @@ import java.util.List;
 public class UserResponse {
 
     String username;
-    private List<User> parents;
     private List<User> children;
     private List<Task> tasks;
 }

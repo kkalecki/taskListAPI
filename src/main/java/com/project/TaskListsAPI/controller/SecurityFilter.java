@@ -19,7 +19,7 @@ public class SecurityFilter implements Filter {
 
     private final JWTService jwtService;
     private final UserRepository userRepository;
-    private final Set<String> publicEndPoints = new HashSet<>(Arrays.asList("/login", "/user"));
+    private final Set<String> publicEndPoints = new HashSet<>(Arrays.asList("/login","/user"));
 
     public SecurityFilter(JWTService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
@@ -44,11 +44,7 @@ public class SecurityFilter implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String token = httpServletRequest.getHeader("Authorization");
-        System.out.println(httpServletRequest.getServletPath());
-        System.out.println(httpServletRequest.getPathInfo());
-        System.out.println(httpServletRequest.getPathTranslated());
-        System.out.println(httpServletRequest.getContextPath());
-        System.out.println(httpServletRequest.getMethod());
+
         if (publicEndPoints.contains(httpServletRequest.getServletPath()) || httpServletRequest.getMethod().equals("OPTIONS"))  {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
