@@ -45,6 +45,7 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String token = httpServletRequest.getHeader("Authorization");
 
+
         if (publicEndPoints.contains(httpServletRequest.getServletPath()) || httpServletRequest.getMethod().equals("OPTIONS"))  {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
