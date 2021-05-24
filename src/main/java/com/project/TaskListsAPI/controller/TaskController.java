@@ -41,6 +41,17 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PatchMapping("/task")
+    public ResponseEntity<Void> update(@RequestBody TaskUpdateRequest taskUpdateRequest)
+    {
+        Task taskToUpdate = taskService.findById(taskUpdateRequest.getId());
+        System.out.println("taskUpdateRequest w controller: "+taskUpdateRequest);
+        Task task = mapper.mapTaskUpdateRequestToTask(taskUpdateRequest,taskToUpdate);
+        System.out.println("task w controller:"+task);
+        taskService.update(task);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @DeleteMapping("/task")
     public ResponseEntity<List<TaskResponse>> deleteTaskById(@RequestParam Long task_id)
     {
